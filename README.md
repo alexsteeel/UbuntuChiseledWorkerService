@@ -1,5 +1,5 @@
 ## Project Description
-This project is a demonstration for debugging a Dockerfile within JetBrains Rider, specifically designed for Ubuntu Chiseled environments.
+This project demonstrates debugging an application inside a Docker container using JetBrains Rider, specifically designed for Ubuntu Chiseled environments.
 
 ## Initial Issue Description
 
