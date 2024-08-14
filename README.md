@@ -1,0 +1,1 @@
+Test project for debugging an Ubuntu Chiseled Dockerfile in JetBrains Rider.
