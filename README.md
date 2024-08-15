@@ -87,21 +87,28 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0.7-noble-chiseled-extra-amd64 as publish
 
 The issue arose from the initial inclusion of a service image based on mcr.microsoft.com/dotnet/runtime:8.0, which was intended to prepare files for subsequent stages. However, because Rider (the IDE being used) defaults to using the first available named stage, the presence of a package that required ASP.NET Core led to the error.
 
-## Solution
+### Solution
 
 To resolve this issue, you can:
+1. **Add a Debug Stage:**
+   - Insert an additional debug stage with the necessary image at the beginning of the Dockerfile. Since this stage is not used elsewhere, it will not impact the performance of the final image build.
 
-1. **Add a Debug Stage:**  
-   Insert an additional debug stage with the necessary image at the beginning of the Dockerfile. Since this stage is not used elsewhere, it will not impact the performance of the final image build.
+   **Example:**
+   ```Dockerfile
+   FROM mcr.microsoft.com/dotnet/aspnet:8.0.7-noble-chiseled-extra-amd64 as debug
+   FROM mcr.microsoft.com/dotnet/runtime:8.0 AS service
+   FROM mcr.microsoft.com/dotnet/aspnet:8.0.7-noble-chiseled-extra-amd64 as publish
+   ```
 
-   Example:
-    ```Dockerfile
-    FROM mcr.microsoft.com/dotnet/aspnet:8.0.7-noble-chiseled-extra-amd64 as debug
-    FROM mcr.microsoft.com/dotnet/runtime:8.0 AS service
-    FROM mcr.microsoft.com/dotnet/aspnet:8.0.7-noble-chiseled-extra-amd64 as publish
-    ```
+2. **Create a Separate Debug Dockerfile:**
+   - Alternatively, create a separate `DebugDockerfile` with just the necessary image and specify this Dockerfile in the debugging settings of your IDE.
 
-2. **Create a Separate Debug Dockerfile:**  
-   Alternatively, create a separate `DebugDockerfile` with just the necessary image and specify this Dockerfile in the debugging settings of your IDE.
+3. **Set Build Options in Rider:**
+   - In Rider, you can set specific build options for your Dockerfile in the settings of the debug profile. For example, you can use the `--target` option to specify which stage to use during the build process. This ensures that the correct stage is selected and avoids the issue of the IDE defaulting to the first available named stage.
 
-This approach ensures that the build process is consistent and avoids the issues related to the default stage selection behavior in the IDE.
+   **Example Option:**
+   - In the debug profile settings, add `--target publish` to ensure that Rider builds the correct stage of your Dockerfile.
+
+---
+
+This approach ensures that the build process is consistent and avoids the issues related to the default stage selection behavior in the IDE, providing multiple solutions depending on your workflow and setup.
