@@ -1,5 +1,6 @@
 ## Project Description
-This project demonstrates debugging an application inside a Docker container using JetBrains Rider, specifically designed for Ubuntu Chiseled environments.
+This project demonstrates debugging an application inside a Docker container using JetBrains Rider, specifically designed for Ubuntu Chiseled environments.  
+A related discussion is available at the GitHub issue: [dotnet/dotnet-docker#4942](https://github.com/dotnet/dotnet-docker/issues/4942).
 
 ## Initial Issue Description
 
